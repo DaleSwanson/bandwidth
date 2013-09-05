@@ -19,6 +19,7 @@ $port->databits(8); # but not this and the two following
 $port->parity("none");
 $port->stopbits(1);
 
+
 # now catch gremlins at start
 my $tEnd = time()+2; # 2 seconds in future
 while (time()< $tEnd) { # end latest after 2 seconds
@@ -57,8 +58,15 @@ while (1)
 	
 	$bandrx = ($currrx - $prevrx) / ($delay*$delayscale) * $bandscale;
 	$bandtx = ($currtx - $prevtx) / ($delay*$delayscale) * $bandscale;
+	$bandrx = int($bandrx+0.5);
+	$bandtx = int($bandtx+0.5);
 	
 	print "\nRX: $bandrx TX: $bandtx";
+	
+	$port->write("$bandrx\n");
+	
+	
+	
 	
 	$prevrx = $currrx;
 	$prevtx = $currtx;
