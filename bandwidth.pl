@@ -7,9 +7,11 @@ use strict;
 use warnings;
 use autodie;
 
+use Time::HiRes qw(usleep nanosleep);
+
 # Set up the serial port
 use Device::SerialPort;
-my $port = Device::SerialPort->new("/dev/tty.usbserial");
+my $port = Device::SerialPort->new("/dev/ttyACM0");
 
 # 19200, 81N on the USB ftdi driver
 $port->baudrate(9600); # you may change this value
@@ -30,8 +32,29 @@ while (1) { # and all the rest of the gremlins as they come in one piece
   last if $c eq ""; # or we're done
   print $c; # uncomment if you want to see the gremlin
 }
+$port->write("0\n");
 
-$port->write("Whatever you feel like sending");
+
+
+
+
+
+for (my $i=0; $i<9999; $i++)
+{
+	print "\n$i";
+	$port->write("$i\n");
+	usleep(250 * 1000);
+}
+
+
+
+
+
+$port->write("0\n");
+
+
+
+
 
 
 print "\nDone\n\n";
