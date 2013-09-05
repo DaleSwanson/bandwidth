@@ -36,6 +36,35 @@ $port->write("0\n");
 
 
 
+my $interface = 'eth0';
+my $delay = 1000; #ms
+my $delayscale = 1000; #ms in sec
+my $bandscale = 1000; #multiply kbyte/sec by this
+my $prevrx = 0;
+my $prevtx = 0;
+my $currrx;
+my $currtx;
+my $bandrx;
+my $bandtx;
+
+while (1)
+{
+	my $result = `ifconfig $interface`;
+	#RX bytes:3361794444 (3.3 GB)  TX bytes:2723988656 (2.7 GB)
+	$result =~ m/RX bytes:(\d+).+TX bytes:(\d+)/; 
+	$currrx = $1;
+	$currtx = $2;
+	
+	$bandrx = ($currrx - $prevrx) / ($delay*$delayscale) * $bandscale;
+	$bandtx = ($currtx - $prevtx) / ($delay*$delayscale) * $bandscale;
+	
+	print "\nRX: $bandrx TX: $bandtx";
+	
+	$prevrx = $currrx;
+	$prevtx = $currtx;
+	usleep($delay * $delayscale);
+	
+}
 
 
 
