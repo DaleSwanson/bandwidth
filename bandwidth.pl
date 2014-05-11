@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#bandwidth by Dale Swanson Sept 05 2013
+#bandwidth by Stephen Wetzel Sept 05 2013
 #get current bandwidth and send it to an Arduino
 
 
